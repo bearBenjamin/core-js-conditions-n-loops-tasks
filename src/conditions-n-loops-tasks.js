@@ -300,8 +300,26 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  if (arr.length === 0) return -1;
+  let sum = 0;
+  let sumRight;
+  let sumLeft = 0;
+
+  for (let i = 0; i < arr.length; i += 1) {
+    sum += arr[i];
+  }
+
+  for (let j = 0; j < arr.length; j += 1) {
+    sumRight = sum - sumLeft - arr[j];
+
+    if (sumRight === sumLeft) {
+      return j;
+    }
+
+    sumLeft += arr[j];
+  }
+  return -1;
 }
 
 /**
@@ -325,8 +343,49 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const matrix = [];
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  let topBorder = 0;
+  let bottomBorder = size - 1;
+  let leftBorder = 0;
+  let rightBorder = size - 1;
+  let count = 1;
+  const maxNumber = size * size;
+
+  while (count <= maxNumber) {
+    for (let i = leftBorder; i <= rightBorder; i += 1) {
+      matrix[topBorder][i] = count;
+      count += 1;
+    }
+    topBorder += 1;
+
+    for (let i = topBorder; i <= bottomBorder; i += 1) {
+      matrix[i][rightBorder] = count;
+      count += 1;
+    }
+    rightBorder -= 1;
+
+    for (let i = rightBorder; i >= leftBorder; i -= 1) {
+      matrix[bottomBorder][i] = count;
+      count += 1;
+    }
+    bottomBorder -= 1;
+
+    for (let i = bottomBorder; i >= topBorder; i -= 1) {
+      matrix[i][leftBorder] = count;
+      count += 1;
+    }
+    leftBorder += 1;
+  }
+  return matrix;
 }
 
 /**
@@ -344,8 +403,26 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const newMatrix = matrix;
+
+  for (let i = 0; i < newMatrix.length; i += 1) {
+    for (let j = i + 1; j < newMatrix.length; j += 1) {
+      const temp = newMatrix[i][j];
+      newMatrix[i][j] = newMatrix[j][i];
+      newMatrix[j][i] = temp;
+    }
+  }
+
+  for (let i = 0; i < newMatrix.length; i += 1) {
+    for (let j = 0; j < newMatrix.length / 2; j += 1) {
+      const temp = newMatrix[i][j];
+      newMatrix[i][j] = newMatrix[i][newMatrix.length - (j + 1)];
+      newMatrix[i][newMatrix.length - (j + 1)] = temp;
+    }
+  }
+
+  return newMatrix;
 }
 
 /**
